@@ -7,21 +7,15 @@ import com.dscvu.patta.models.Credentials;
 import com.dscvu.patta.models.UserData;
 import com.dscvu.patta.retrofit.Clients.LoginClient;
 import com.dscvu.patta.retrofit.Objs.LoginObj;
+import com.dscvu.patta.utils.RetrofitUtil;
 import com.dscvu.patta.utils.URLs;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginRepository {
 
-    //Retrofit Builder Initialization
-    private static Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
-            .baseUrl(URLs.host)
-            .addConverterFactory(GsonConverterFactory.create());
-    private static Retrofit retrofit = retrofitBuilder.build();
 
     private LoginRepository(Context context){
 
@@ -33,7 +27,7 @@ public class LoginRepository {
 
     public void loginUser(String email, String password, LoginListener loginListener){
         loginListener.onLoginStart();
-        LoginClient loginClient = retrofit.create(LoginClient.class);
+        LoginClient loginClient = RetrofitUtil.retrofit.create(LoginClient.class);
         Call<LoginObj> call = loginClient.getLogin(new Credentials(email, password));
         call.enqueue(new Callback<LoginObj>() {
             @Override
@@ -47,7 +41,7 @@ public class LoginRepository {
                         loginListener.onLoginFailure(loginObj.getResponseCode());
                     }
                 } else {
-                    loginListener.onLoginFailure("Can't Log you in");
+                    loginListener.onLoginFailure(response.message());
                 }
             }
 
