@@ -12,12 +12,6 @@ Patta Android App is an Android App for Patta App Project assigned by DSC VU.
 - Clone this project to your computer.
 - Open project in Android Studio.
 
-## App Architecture
-
-graph LR
-A[View] --> B[ViewModel]
-B --> C[Model]
-C --> D[API]
 
 ## Directory Structure
 
